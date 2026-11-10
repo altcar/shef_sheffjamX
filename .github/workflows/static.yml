@@ -36,10 +36,10 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v4
-      - run: |
-          cd export
-          curl -fsSL https://github.com/gzuidhof/coi-serviceworker/raw/master/coi-serviceworker.js > coi-serviceworker.js
-          sed -i 's#\(<script src="index.js"></script>\)# <script src="coi-serviceworker.js"></script>\n\1#g' index.html
+      # export/coi-serviceworker.js is committed and index.html loads it from <head>,
+      # so nothing needs to be patched at deploy time. Just make sure it is there.
+      - name: Verify COOP/COEP service worker is present
+        run: test -f export/coi-serviceworker.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
